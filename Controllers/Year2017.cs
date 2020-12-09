@@ -51,68 +51,36 @@ namespace Advent_of_Code.Controllers
 
             foreach (var input in File.ReadLines($"{pathInputs}/day2.txt"))
             {
-                part1 += Day2Part1(input);
-                part2 += Day2Part2(input);
+                var array = input.Split(' ').Select(s => Int32.Parse(s.ToString())).ToArray();
+
+                part1 += Day2Part1(array);
+                part2 += Day2Part2(array);
             }
 
             Console.WriteLine($"2017 - Day 2 - Part 1 : {part1}");
             Console.WriteLine($"2017 - Day 2 - Part 2 : {part2}");
         }
 
-        public static int Day2Part1(string input)
+        public static int Day2Part1(int[] array)
         {
-            var array = input.Split('x');
-            var lower = int.MaxValue;
-            var total = 0;
-
-            for (int i = 0; i < array.Length - 1; i++)
-            {
-                for (int j = 1; j < array.Length; j++)
-                {
-                    if (j > i)
-                    {
-                        var value = int.Parse(array[i]) * int.Parse(array[j]);
-                        total += value * 2;
-
-                        if (value < lower)
-                        {
-                            lower = value;
-                        }
-                    }
-                }
-            }
-
-            total += lower;
-
-            return total;
+            return array.Max() - array.Min();
         }
 
-        public static int Day2Part2(string input)
+        public static int Day2Part2(int[] array)
         {
-            var array = input.Split('x').Select(s => int.Parse(s)).ToArray();
-            var total = array.Aggregate(1, (a, b) => a * b);
-            var lower1 = int.MaxValue;
-            var lower2 = int.MaxValue;
+            var total = 0;
 
             for (int i = 0; i < array.Length; i++)
             {
-                if (array[i] < lower1)
+                for (int j = 0; j < array.Length; j++)
                 {
-                    if (lower1 < lower2)
+                    if (i != j && array[i] % array[j] == 0)
                     {
-                        lower2 = lower1;
+                        total += array[i] / array[j];
+                        break;
                     }
-
-                    lower1 = array[i];
-                }
-                else if (array[i] < lower2)
-                {
-                    lower2 = array[i];
                 }
             }
-
-            total += lower1 * 2;
-            total += lower2 * 2;
 
             return total;
         }
@@ -138,100 +106,12 @@ namespace Advent_of_Code.Controllers
 
         public static int Day3Part1(string input)
         {
-            var locationX = 0;
-            var locationY = 0;
-            var array = input.ToCharArray();
-            var locationVisited = new List<string>();
-            locationVisited.Add($"{locationX}/{locationY}");
-
-            for (int i = 0; i < array.Length; i++)
-            {
-                switch (array[i].ToString())
-                {
-                    case "^":
-                        locationY++;
-                        break;
-                    case "v":
-                        locationY--;
-                        break;
-                    case ">":
-                        locationX++;
-                        break;
-                    case "<":
-                        locationX--;
-                        break;
-                }
-
-                if (!locationVisited.Contains($"{locationX}/{locationY}"))
-                {
-                    locationVisited.Add($"{locationX}/{locationY}");
-                }
-            }
-
-            return locationVisited.Count;
+            return 0;
         }
 
         public static int Day3Part2(string input)
         {
-            var array = input.ToCharArray();
-            var locationX = 0;
-            var locationY = 0;
-            var locationXRobot = 0;
-            var locationYRobot = 0;
-            var locationVisited = new List<string>();
-            locationVisited.Add($"{locationX}/{locationY}");
-
-            for (int i = 0; i < array.Length; i++)
-            {
-                if (i % 2 == 0)
-                {
-                    switch (array[i].ToString())
-                    {
-                        case "^":
-                            locationY++;
-                            break;
-                        case "v":
-                            locationY--;
-                            break;
-                        case ">":
-                            locationX++;
-                            break;
-                        case "<":
-                            locationX--;
-                            break;
-                    }
-
-                    if (!locationVisited.Contains($"{locationX}/{locationY}"))
-                    {
-                        locationVisited.Add($"{locationX}/{locationY}");
-                    }
-                }
-                else
-                {
-                    switch (array[i].ToString())
-                    {
-                        case "^":
-                            locationYRobot++;
-                            break;
-                        case "v":
-                            locationYRobot--;
-                            break;
-                        case ">":
-                            locationXRobot++;
-                            break;
-                        case "<":
-                            locationXRobot--;
-                            break;
-                    }
-
-                    if (!locationVisited.Contains($"{locationXRobot}/{locationYRobot}"))
-                    {
-                        locationVisited.Add($"{locationXRobot}/{locationYRobot}");
-                    }
-                }
-            }
-
-            return locationVisited.Count;
+            return 0;
         }
 
         #endregion
@@ -240,11 +120,7 @@ namespace Advent_of_Code.Controllers
 
         public void Day4()
         {
-            var input = File.ReadLines($"{pathInputs}/day4.txt").First();
 
-            var resultPart1 = Day4Part1(input);
-            Console.WriteLine($"2017 - Day 4 - Part 1 : {resultPart1}");
-            Console.WriteLine($"2017 - Day 4 - Part 2 : {Day4Part2(input, resultPart1)}");
         }
 
         public static int Day4Part1(string input)

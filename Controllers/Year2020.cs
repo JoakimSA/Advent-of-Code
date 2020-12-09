@@ -304,34 +304,117 @@ namespace Advent_of_Code.Controllers
 
         public void Day5()
         {
-            var part1 = 0;
-            var part2 = 0;
+            var array = File.ReadAllLines($"{pathInputs}/day5.txt");
 
-            foreach (var input in File.ReadLines($"{pathInputs}/day5.txt"))
-            {
-                part1 += Day5Part1(input);
-                part2 += Day5Part2(input);
-            }
-
-            Console.WriteLine($"2020 - Day 5 - Part 1 : {part1}");
-            Console.WriteLine($"2020 - Day 5 - Part 2 : {part2}");
+            Console.WriteLine($"2020 - Day 5 - Part 1 : {Day5Part1(array)}");
+            Console.WriteLine($"2020 - Day 5 - Part 2 : {Day5Part2(array)}");
         }
 
-        public static int Day5Part1(string input)
+        public static int Day5Part1(string[] inputs)
         {
-            var bannedWords = new string[4] { "ab", "cd", "pq", "xy" };
+            var highestID = 0;
 
-            if (bannedWords.Any(input.Contains))
+            foreach (var line in inputs)
             {
-                return 0;
+                var linePositionDown = 0;
+                var linePositionUp = 127;
+
+                foreach (char lineValue in line.Take(7))
+                {
+                    var value = ((linePositionUp - linePositionDown) % 2) == 0 ? ((linePositionUp - linePositionDown) / 2) : ((linePositionUp - linePositionDown) / 2) + 1;
+
+                    if (lineValue == 'F')
+                    {
+                        linePositionUp -= value;
+                    }
+                    else
+                    {
+                        linePositionDown += value;
+                    }
+                }
+
+                var columnPositionDown = 0;
+                var columnPositionUp = 7;
+
+                foreach (char columnValue in line.Skip(7).Take(3))
+                {
+                    var valueC = ((columnPositionUp - columnPositionDown) % 2) == 0 ? ((columnPositionUp - columnPositionDown) / 2) : ((columnPositionUp - columnPositionDown) / 2) + 1;
+
+                    if (columnValue == 'L')
+                    {
+                        columnPositionUp -= valueC;
+                    }
+                    else
+                    {
+                        columnPositionDown += valueC;
+                    }
+                }
+
+                var result = (linePositionUp * 8) + columnPositionUp;
+
+                if (result > highestID)
+                {
+                    highestID = result;
+                }
             }
 
-            return 1;
+            return highestID;
         }
 
-        public static int Day5Part2(string input)
+        public static int Day5Part2(string[] inputs)
         {
-            return 0;
+            var highest = 0;
+            var lowest = int.MaxValue;
+            var list = new List<int>();
+
+            foreach (var line in inputs)
+            {
+                var linePositionDown = 0;
+                var linePositionUp = 127;
+
+                foreach (char lineValue in line.Take(7))
+                {
+                    var value = ((linePositionUp - linePositionDown) % 2) == 0 ? ((linePositionUp - linePositionDown) / 2) : ((linePositionUp - linePositionDown) / 2) + 1;
+
+                    if (lineValue == 'F')
+                    {
+                        linePositionUp -= value;
+                    }
+                    else
+                    {
+                        linePositionDown += value;
+                    }
+                }
+
+                var columnPositionDown = 0;
+                var columnPositionUp = 7;
+
+                foreach (char columnValue in line.Skip(7).Take(3))
+                {
+                    var valueC = ((columnPositionUp - columnPositionDown) % 2) == 0 ? ((columnPositionUp - columnPositionDown) / 2) : ((columnPositionUp - columnPositionDown) / 2) + 1;
+
+                    if (columnValue == 'L')
+                    {
+                        columnPositionUp -= valueC;
+                    }
+                    else
+                    {
+                        columnPositionDown += valueC;
+                    }
+                }
+
+                var result = (linePositionUp * 8) + columnPositionUp;
+
+                if (result > highest)
+                    highest = result;
+
+                if (result < lowest)
+                    lowest = result;
+
+                list.Add(result);
+            }
+
+            return Enumerable.Range(lowest, highest).Except(list).FirstOrDefault();
         }
 
         #endregion
