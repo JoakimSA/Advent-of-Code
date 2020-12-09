@@ -7,19 +7,26 @@ namespace _
     {
         public static void Main(string[] args)
         {
-            if(args.Length == 2) {
-                Type t = Type.GetType($"Advent_of_Code.Controllers.{args[0]}");
+            Console.WriteLine("Enter year and day (ex: Year2015 Day1) : ");
+		    var parameters = Console.ReadLine().Split(" ");
+
+            if(parameters.Length == 2) {
+                Type t = Type.GetType($"Advent_of_Code.Controllers.{parameters[0]}");
 
                 if(t != null) {
                     var controller = Activator.CreateInstance(t);
-                    MethodInfo theMethod = t.GetMethod(args[1]);
+                    MethodInfo theMethod = t.GetMethod(parameters[1]);
 
-                    theMethod.Invoke(controller, null);
+                    if(theMethod != null) {
+                        theMethod.Invoke(controller, null);
+                    } else {
+                        Console.WriteLine("ERR: Unknown day");
+                    }
                 } else {
-                    Console.WriteLine("Unknown day");
+                    Console.WriteLine("ERR: Unknown year");
                 }                
             } else {
-                Console.WriteLine("Missing arguments");
+                Console.WriteLine("ERR: Missing parameters");
             }
         }
     }

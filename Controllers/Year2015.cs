@@ -1,4 +1,4 @@
-using Advent_of_Code;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System;
@@ -9,8 +9,7 @@ namespace Advent_of_Code.Controllers
     {
         private const string pathInputs = "./inputs/2015"; 
 
-        public Year2015() {
-        }
+        public Year2015() { }
 
         public void Day1() {
             
@@ -68,20 +67,120 @@ namespace Advent_of_Code.Controllers
                     
                     lower1 = array[i];
                 } else if (array[i] < lower2){
-                    lower2 = array[i];                    
+                    lower2 = array[i];
                 }
             }
             
             total += lower1*2;
             total += lower2*2;
             
-            return total;         
+            return total;
         }
 
         #endregion 
+        
+        #region Day 3
+
         public void Day3() {
+            var part1 = 0;
+            var part2 = 0;
             
+            foreach(var line in File.ReadLines($"{pathInputs}/day3.txt")) {
+                part1 += Day3Part1(line);
+                part2 += Day3Part2(line);
+            }           
+            
+            Console.WriteLine($"2015 - Day 3 - Part 1 : {part1}");
+            Console.WriteLine($"2015 - Day 3 - Part 2 : {part2}");
         }
+
+        public static int Day3Part1(string input) {
+            var locationX = 0;
+            var locationY = 0;
+            var array = input.ToCharArray();
+            var locationVisited = new List<string>();
+            locationVisited.Add($"{locationX}/{locationY}");
+                        
+            for(int i = 0; i < array.Length; i++) {
+                switch(array[i].ToString()) {
+                    case "^":
+                        locationY++;
+                        break;
+                    case "v":
+                        locationY--;
+                        break;
+                    case ">":
+                        locationX++;
+                        break;
+                    case "<":
+                        locationX--;
+                        break;
+                }
+                
+                if(!locationVisited.Contains($"{locationX}/{locationY}")) {
+                    locationVisited.Add($"{locationX}/{locationY}");
+                }
+            }
+            
+            return locationVisited.Count;
+        }
+
+        public static int Day3Part2(string input) {
+            var array = input.ToCharArray();
+            var locationX = 0;
+            var locationY = 0;
+            var locationXRobot = 0;
+            var locationYRobot = 0;
+            var locationVisited = new List<string>();
+            locationVisited.Add($"{locationX}/{locationY}");
+                        
+            for(int i = 0; i < array.Length; i++) {
+                if(i%2 == 0) {
+                   switch(array[i].ToString()) {
+                        case "^":
+                            locationY++;
+                            break;
+                        case "v":
+                            locationY--;
+                            break;
+                        case ">":
+                            locationX++;
+                            break;
+                        case "<":
+                            locationX--;
+                            break;
+                    }
+                    
+                    if(!locationVisited.Contains($"{locationX}/{locationY}")) {
+                        locationVisited.Add($"{locationX}/{locationY}");
+                    }
+                } else {
+                    switch(array[i].ToString()) {
+                        case "^":
+                            locationYRobot++;
+                            break;
+                        case "v":
+                            locationYRobot--;
+                            break;
+                        case ">":
+                            locationXRobot++;
+                            break;
+                        case "<":
+                            locationXRobot--;
+                            break;
+                    }
+                    
+                    if(!locationVisited.Contains($"{locationXRobot}/{locationYRobot}")) {
+                        locationVisited.Add($"{locationXRobot}/{locationYRobot}");
+                    }
+                }
+            }
+            
+            return locationVisited.Count;      
+        }
+
+        #endregion
+
         public void Day4() {
             
         }
