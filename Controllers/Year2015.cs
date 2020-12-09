@@ -1,7 +1,9 @@
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System;
+using System.Text;
+using System.Text.RegularExpressions;
 
 namespace Advent_of_Code.Controllers
 {
@@ -11,10 +13,34 @@ namespace Advent_of_Code.Controllers
 
         public Year2015() { }
 
+        #region Day 1
+
         public void Day1()
         {
+            var part1 = 0;
+            var part2 = 0;
 
+            foreach (var input in File.ReadLines($"{pathInputs}/day1.txt"))
+            {
+                part1 += Day1Part1(input);
+                part2 += Day1Part2(input);
+            }
+
+            Console.WriteLine($"2015 - Day 1 - Part 1 : {part1}");
+            Console.WriteLine($"2015 - Day 1 - Part 2 : {part2}");
         }
+
+        public static int Day1Part1(string input)
+        {
+            return 0;
+        }
+
+        public static int Day1Part2(string input)
+        {
+            return 0;
+        }
+
+        #endregion
 
         #region Day 2
 
@@ -23,10 +49,10 @@ namespace Advent_of_Code.Controllers
             var part1 = 0;
             var part2 = 0;
 
-            foreach (var line in File.ReadLines($"{pathInputs}/day2.txt"))
+            foreach (var input in File.ReadLines($"{pathInputs}/day2.txt"))
             {
-                part1 += Day2Part1(line);
-                part2 += Day2Part2(line);
+                part1 += Day2Part1(input);
+                part2 += Day2Part2(input);
             }
 
             Console.WriteLine($"2015 - Day 2 - Part 1 : {part1}");
@@ -100,10 +126,10 @@ namespace Advent_of_Code.Controllers
             var part1 = 0;
             var part2 = 0;
 
-            foreach (var line in File.ReadLines($"{pathInputs}/day3.txt"))
+            foreach (var input in File.ReadLines($"{pathInputs}/day3.txt"))
             {
-                part1 += Day3Part1(line);
-                part2 += Day3Part2(line);
+                part1 += Day3Part1(input);
+                part2 += Day3Part2(input);
             }
 
             Console.WriteLine($"2015 - Day 3 - Part 1 : {part1}");
@@ -210,14 +236,106 @@ namespace Advent_of_Code.Controllers
 
         #endregion
 
+        #region Day 4
+
         public void Day4()
         {
+            var input = File.ReadLines($"{pathInputs}/day4.txt").First();
 
+            var resultPart1 = Day4Part1(input);
+            Console.WriteLine($"2015 - Day 4 - Part 1 : {resultPart1}");
+            Console.WriteLine($"2015 - Day 4 - Part 2 : {Day4Part2(input, resultPart1)}");
         }
+
+        public static int Day4Part1(string input)
+        {
+            using (System.Security.Cryptography.MD5 md5 = System.Security.Cryptography.MD5.Create())
+            {
+                var integer = -1;
+                StringBuilder sb = new StringBuilder();
+
+                do
+                {
+                    integer++;
+
+                    byte[] inputBytes = System.Text.Encoding.ASCII.GetBytes($"{input}{integer}");
+                    byte[] hashBytes = md5.ComputeHash(inputBytes);
+
+                    sb = new StringBuilder();
+                    for (int i = 0; i < hashBytes.Length; i++)
+                    {
+                        sb.Append(hashBytes[i].ToString("X2"));
+                    }
+                } while (!sb.ToString().StartsWith("00000"));
+
+                return integer;
+            }
+        }
+
+        public static int Day4Part2(string input, int resultPart1)
+        {
+            using (System.Security.Cryptography.MD5 md5 = System.Security.Cryptography.MD5.Create())
+            {
+                var integer = resultPart1 - 1;
+                // Convert the byte array to hexadecimal string
+                StringBuilder sb = new StringBuilder();
+
+                do
+                {
+                    integer++;
+
+                    byte[] inputBytes = System.Text.Encoding.ASCII.GetBytes($"{input}{integer}");
+                    byte[] hashBytes = md5.ComputeHash(inputBytes);
+
+                    sb = new StringBuilder();
+                    for (int i = 0; i < hashBytes.Length; i++)
+                    {
+                        sb.Append(hashBytes[i].ToString("X2"));
+                    }
+                } while (!sb.ToString().StartsWith("000000"));
+
+                return integer;
+            }
+        }
+
+        #endregion
+
+        #region Day 1
+
         public void Day5()
         {
+            var part1 = 0;
+            var part2 = 0;
 
+            foreach (var input in File.ReadLines($"{pathInputs}/day5.txt"))
+            {
+                part1 += Day5Part1(input);
+                part2 += Day5Part2(input);
+            }
+
+            Console.WriteLine($"2015 - Day 5 - Part 1 : {part1}");
+            Console.WriteLine($"2015 - Day 5 - Part 2 : {part2}");
         }
+
+        public static int Day5Part1(string input)
+        {
+            var bannedWords = new string[4] { "ab", "cd", "pq", "xy" };
+
+            if (bannedWords.Any(input.Contains))
+            {
+                return 0;
+            }
+
+            return 1;
+        }
+
+        public static int Day5Part2(string input)
+        {
+            return 0;
+        }
+
+        #endregion
+
         public void Day6()
         {
 
