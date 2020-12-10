@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Numerics;
 using System.Text;
 using System.Text.RegularExpressions;
 
@@ -510,22 +511,47 @@ namespace Advent_of_Code.Controllers
 
         public void Day9()
         {
-            var part1 = 0;
-            var part2 = 0;
+            BigInteger day1Ended = 0;
+            var list = new List<BigInteger>();
 
             foreach (var input in File.ReadLines($"{pathInputs}/day9.txt"))
             {
-                part1 += Day9Part1(input);
-                part2 += Day9Part2(input);
-            }
+                list.Add(BigInteger.Parse(input));
 
-            Console.WriteLine($"2020 - Day 9 - Part 1 : {part1}");
-            Console.WriteLine($"2020 - Day 9 - Part 2 : {part2}");
+                if (list.Count > 25)
+                {
+                    if (day1Ended == 0)
+                    {
+                        day1Ended = Day9Part1(list);
+
+                        if (day1Ended != 0)
+                        {
+                            Console.WriteLine($"2020 - Day 9 - Part 1 : {day1Ended}");
+                        }
+                    }
+                }
+                //part2 += Day9Part2(input);
+            }
         }
 
-        public static int Day9Part1(string input)
+        public static BigInteger Day9Part1(List<BigInteger> inputs)
         {
-            return 0;
+            var array = inputs.Skip(inputs.Count - 26).ToArray();
+
+            var isValid = false;
+
+            for (int i = 0; i < array.Length - 1; i++)
+            {
+                for (int j = array.Length - 2; j > i; j--)
+                {
+                    if (array[i] != array[j] && array[i] + array[j] == array[array.Length - 1])
+                    {
+                        isValid = true;
+                    }
+                }
+            }
+
+            return isValid ? 0 : array[array.Length - 1];
         }
 
         public static int Day9Part2(string input)
