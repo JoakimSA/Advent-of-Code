@@ -591,22 +591,35 @@ namespace Advent_of_Code.Controllers
 
         public void Day10()
         {
-            var part1 = 0;
             var part2 = 0;
 
-            foreach (var input in File.ReadLines($"{pathInputs}/day10.txt"))
-            {
-                part1 += Day10Part1(input);
-                part2 += Day10Part2(input);
-            }
+            var inputs = File.ReadLines($"{pathInputs}/day10.txt").Select(s => int.Parse(s)).OrderBy(o => o).ToList();
 
-            Console.WriteLine($"2020 - Day 10 - Part 1 : {part1}");
-            Console.WriteLine($"2020 - Day 10 - Part 2 : {part2}");
+            Console.WriteLine($"2020 - Day 10 - Part 1 : {Day10Part1(inputs)}");
+            //Console.WriteLine($"2020 - Day 10 - Part 2 : {part2}");
         }
 
-        public static int Day10Part1(string input)
+        public static int Day10Part1(List<int> inputs)
         {
-            return 0;
+            var previousNumber = inputs.Min();
+            var jolt1 = 1; // 0 to 1
+            var jolt3 = 1; // Max to Max+3
+
+            foreach (var input in inputs.Skip(1))
+            {
+                if (input - previousNumber == 1)
+                {
+                    jolt1++;
+                }
+                else if (input - previousNumber == 3)
+                {
+                    jolt3++;
+                }
+
+                previousNumber = input;
+            }
+
+            return jolt1 * jolt3;
         }
 
         public static int Day10Part2(string input)
