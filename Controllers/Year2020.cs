@@ -532,7 +532,7 @@ namespace Advent_of_Code.Controllers
                     }
                 }
             }
-            
+
             Console.WriteLine($"2020 - Day 9 - Part 2 : {Day9Part2(day1Ended, inputs)}");
         }
 
@@ -556,30 +556,30 @@ namespace Advent_of_Code.Controllers
             return isValid ? 0 : array[array.Length - 1];
         }
 
-        public static BigInteger Day9Part2(BigInteger day1Ended, IEnumerable<string> inputs)
+        public static BigInteger Day9Part2(BigInteger day1Ended, IEnumerable<BigInteger> inputs)
         {
             var list = new List<BigInteger>();
+            var inputsArray = inputs.ToArray();
 
-            foreach(var input in inputs)
+            for (var i = 0; i < inputsArray.Length; i++)
             {
-                var sum = input;
-                list.Add(input);
+                list = new List<BigInteger>() { inputsArray[i] };
+                var sum = inputsArray[i];
 
-                if(sum < day1Ended) {
-                    foreach(var inputLoop in inputs)
+                if (sum < day1Ended)
+                {
+                    for (var j = i + 1; j < inputsArray.Length; j++)
                     {
-                        sum += inputLoop;
-                        list.Add(inputLoop);
+                        sum += inputsArray[j];
+                        list.Add(inputsArray[j]);
 
-                        if(sum == day1Ended) {
+                        if (sum == day1Ended)
                             break;
-                        }
                     }
                 }
 
-                if(sum == day1Ended) {
+                if (sum == day1Ended)
                     break;
-                }
             }
 
             return list.Max() + list.Min();
