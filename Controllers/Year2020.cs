@@ -532,6 +532,8 @@ namespace Advent_of_Code.Controllers
                 }
                 //part2 += Day9Part2(input);
             }
+
+            Day9Part2(list, day1Ended);
         }
 
         public static BigInteger Day9Part1(List<BigInteger> inputs)
@@ -554,7 +556,7 @@ namespace Advent_of_Code.Controllers
             return isValid ? 0 : array[array.Length - 1];
         }
 
-        public static int Day9Part2(string input)
+        public static int Day9Part2(List<BigInteger> inputs, BigInteger inputInt)
         {
             return 0;
         }
@@ -710,21 +712,79 @@ namespace Advent_of_Code.Controllers
 
         public void Day15()
         {
-            var part1 = 0;
-            var part2 = 0;
+            var array = File.ReadAllLines($"{pathInputs}/day15.txt").FirstOrDefault().Split(',').Select(s => int.Parse(s)).ToArray();
 
-            foreach (var input in File.ReadLines($"{pathInputs}/day15.txt"))
-            {
-                part1 += Day15Part1(input);
-                part2 += Day15Part2(input);
-            }
-
-            Console.WriteLine($"2020 - Day 15 - Part 1 : {part1}");
-            Console.WriteLine($"2020 - Day 15 - Part 2 : {part2}");
+            //Console.WriteLine($"2020 - Day 15 - Part 1 : {part1}");
+            Console.WriteLine($"2020 - Day 15 - Part 2 : {Day15Part1(array)}");
         }
 
-        public static int Day15Part1(string input)
+        public static int Day15Part1(int[] array)
         {
+            var dictDay1 = new Dictionary<int, List<int>>();
+
+            for (int j = 0; j < array.Length; j++)
+            {
+                var inputInt = array[j];
+
+                if (!dictDay1.ContainsKey(inputInt))
+                {
+                    dictDay1.Add(inputInt, new List<int>() { j });
+                }
+                else
+                {
+                    if (dictDay1[inputInt].Count == 2)
+                    {
+                        dictDay1[inputInt].RemoveAt(0);
+                    }
+
+                    dictDay1[inputInt].Add(j);
+                }
+            }
+
+            var previousNumber = array[array.Length - 1];
+
+            for (int i = array.Length; i <= 2020; i++)
+            {
+                if (!dictDay1.ContainsKey(previousNumber))
+                {
+                    dictDay1[0].Remove(0);
+                    dictDay1[0].Add(i);
+                    previousNumber = 0;
+                }
+                else
+                {
+                    if (dictDay1[previousNumber].Count == 2)
+                    {
+                        var result = dictDay1[previousNumber].ElementAt(1) - dictDay1[previousNumber].ElementAt(0);
+
+                        if (dictDay1.ContainsKey(result))
+                        {
+                            if (dictDay1[result].Count == 2)
+                            {
+                                dictDay1[result].RemoveAt(0);
+                            }
+
+                            dictDay1[result].Add(i);
+
+                            if (i == 2000)
+                            {
+                                return result;
+                            }
+                        }
+                        else
+                        {
+                            dictDay1.Add(result, new List<int>() { i });
+                        }
+
+                        previousNumber = result;
+                    }
+                    else
+                    {
+                        dictDay1[previousNumber].Add(i);
+                    }
+                }
+            }
+
             return 0;
         }
 
