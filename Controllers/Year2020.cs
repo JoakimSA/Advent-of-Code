@@ -513,10 +513,11 @@ namespace Advent_of_Code.Controllers
         {
             BigInteger day1Ended = 0;
             var list = new List<BigInteger>();
+            var inputs = File.ReadLines($"{pathInputs}/day9.txt").Select(s => BigInteger.Parse(s));
 
-            foreach (var input in File.ReadLines($"{pathInputs}/day9.txt"))
+            foreach (var input in inputs)
             {
-                list.Add(BigInteger.Parse(input));
+                list.Add(input);
 
                 if (list.Count > 25)
                 {
@@ -530,10 +531,9 @@ namespace Advent_of_Code.Controllers
                         }
                     }
                 }
-                //part2 += Day9Part2(input);
             }
 
-            Day9Part2(list, day1Ended);
+            Console.WriteLine($"2020 - Day 9 - Part 2 : {Day9Part2(day1Ended, inputs)}");
         }
 
         public static BigInteger Day9Part1(List<BigInteger> inputs)
@@ -556,9 +556,33 @@ namespace Advent_of_Code.Controllers
             return isValid ? 0 : array[array.Length - 1];
         }
 
-        public static int Day9Part2(List<BigInteger> inputs, BigInteger inputInt)
+        public static BigInteger Day9Part2(BigInteger day1Ended, IEnumerable<BigInteger> inputs)
         {
-            return 0;
+            var list = new List<BigInteger>();
+            var inputsArray = inputs.ToArray();
+
+            for (var i = 0; i < inputsArray.Length; i++)
+            {
+                list = new List<BigInteger>() { inputsArray[i] };
+                var sum = inputsArray[i];
+
+                if (sum < day1Ended)
+                {
+                    for (var j = i + 1; j < inputsArray.Length; j++)
+                    {
+                        sum += inputsArray[j];
+                        list.Add(inputsArray[j]);
+
+                        if (sum == day1Ended)
+                            break;
+                    }
+                }
+
+                if (sum == day1Ended)
+                    break;
+            }
+
+            return list.Max() + list.Min();
         }
 
         #endregion
@@ -567,22 +591,35 @@ namespace Advent_of_Code.Controllers
 
         public void Day10()
         {
-            var part1 = 0;
             var part2 = 0;
 
-            foreach (var input in File.ReadLines($"{pathInputs}/day10.txt"))
-            {
-                part1 += Day10Part1(input);
-                part2 += Day10Part2(input);
-            }
+            var inputs = File.ReadLines($"{pathInputs}/day10.txt").Select(s => int.Parse(s)).OrderBy(o => o).ToList();
 
-            Console.WriteLine($"2020 - Day 10 - Part 1 : {part1}");
-            Console.WriteLine($"2020 - Day 10 - Part 2 : {part2}");
+            Console.WriteLine($"2020 - Day 10 - Part 1 : {Day10Part1(inputs)}");
+            //Console.WriteLine($"2020 - Day 10 - Part 2 : {part2}");
         }
 
-        public static int Day10Part1(string input)
+        public static int Day10Part1(List<int> inputs)
         {
-            return 0;
+            var previousNumber = inputs.Min();
+            var jolt1 = 1; // 0 to 1
+            var jolt3 = 1; // Max to Max+3
+
+            foreach (var input in inputs.Skip(1))
+            {
+                if (input - previousNumber == 1)
+                {
+                    jolt1++;
+                }
+                else if (input - previousNumber == 3)
+                {
+                    jolt3++;
+                }
+
+                previousNumber = input;
+            }
+
+            return jolt1 * jolt3;
         }
 
         public static int Day10Part2(string input)
