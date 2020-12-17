@@ -750,12 +750,14 @@ namespace Advent_of_Code.Controllers
             var array = File.ReadAllLines($"{pathInputs}/day15.txt").FirstOrDefault().Split(',').Select(s => int.Parse(s)).ToArray();
 
             //Console.WriteLine($"2020 - Day 15 - Part 1 : {part1}");
-            Console.WriteLine($"2020 - Day 15 - Part 2 : {Day15Part1(array)}");
+            Console.WriteLine($"2020 - Day 15 - Part 1 : {Day15Part1(array)}");
         }
 
         public static int Day15Part1(int[] array)
         {
             var dictDay1 = new Dictionary<int, List<int>>();
+            var logs = new List<int>();
+            dictDay1.Add(0, new List<int>());
 
             for (int j = 0; j < array.Length; j++)
             {
@@ -780,7 +782,7 @@ namespace Advent_of_Code.Controllers
 
             for (int i = array.Length; i <= 2020; i++)
             {
-                Console.WriteLine(previousNumber);
+                logs.Add(previousNumber);
 
                 if (!dictDay1.ContainsKey(previousNumber))
                 {
@@ -805,6 +807,8 @@ namespace Advent_of_Code.Controllers
 
                             if (i == 2000)
                             {
+                                Console.WriteLine($"{logs.Count} / {string.Join("-", logs.ToArray())}");
+
                                 return result;
                             }
                         }
@@ -827,6 +831,8 @@ namespace Advent_of_Code.Controllers
                     }
                 }
             }
+
+            Console.WriteLine(string.Join("-", logs.ToArray()));
 
             return previousNumber;
         }
