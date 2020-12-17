@@ -591,8 +591,6 @@ namespace Advent_of_Code.Controllers
 
         public void Day10()
         {
-            var part2 = 0;
-
             var inputs = File.ReadLines($"{pathInputs}/day10.txt").Select(s => int.Parse(s)).OrderBy(o => o).ToList();
 
             Console.WriteLine($"2020 - Day 10 - Part 1 : {Day10Part1(inputs)}");
@@ -765,7 +763,7 @@ namespace Advent_of_Code.Controllers
 
                 if (!dictDay1.ContainsKey(inputInt))
                 {
-                    dictDay1.Add(inputInt, new List<int>() { j });
+                    dictDay1.Add(inputInt, new List<int>() { j + 1 });
                 }
                 else
                 {
@@ -774,7 +772,7 @@ namespace Advent_of_Code.Controllers
                         dictDay1[inputInt].RemoveAt(0);
                     }
 
-                    dictDay1[inputInt].Add(j);
+                    dictDay1[inputInt].Add(j + 1);
                 }
             }
 
@@ -782,10 +780,12 @@ namespace Advent_of_Code.Controllers
 
             for (int i = array.Length; i <= 2020; i++)
             {
+                Console.WriteLine(previousNumber);
+
                 if (!dictDay1.ContainsKey(previousNumber))
                 {
                     dictDay1[0].Remove(0);
-                    dictDay1[0].Add(i);
+                    dictDay1[0].Add(i + 1);
                     previousNumber = 0;
                 }
                 else
@@ -801,7 +801,7 @@ namespace Advent_of_Code.Controllers
                                 dictDay1[result].RemoveAt(0);
                             }
 
-                            dictDay1[result].Add(i);
+                            dictDay1[result].Add(i + 1);
 
                             if (i == 2000)
                             {
@@ -810,19 +810,25 @@ namespace Advent_of_Code.Controllers
                         }
                         else
                         {
-                            dictDay1.Add(result, new List<int>() { i });
+                            dictDay1.Add(result, new List<int>() { i + 1 });
                         }
 
                         previousNumber = result;
                     }
                     else
                     {
-                        dictDay1[previousNumber].Add(i);
+                        if (dictDay1[0].Count == 2)
+                        {
+                            dictDay1[0].RemoveAt(0);
+                        }
+
+                        dictDay1[0].Add(i + 1);
+                        previousNumber = 0;
                     }
                 }
             }
 
-            return 0;
+            return previousNumber;
         }
 
         public static int Day15Part2(string input)
