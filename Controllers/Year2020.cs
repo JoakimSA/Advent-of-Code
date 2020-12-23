@@ -1022,25 +1022,67 @@ namespace Advent_of_Code.Controllers
 
         public void Day22()
         {
-            var part1 = 0;
-            var part2 = 0;
+            var isPlayerOne = true;
+            var playerOneCards = new List<int>();
+            var playerTwoCards = new List<int>();
 
             foreach (var input in File.ReadLines($"{pathInputs}/day22.txt"))
             {
-                part1 += Day22Part1(input);
-                part2 += Day22Part2(input);
+                if (!string.IsNullOrEmpty(input))
+                {
+                    if (int.TryParse(input, out int value))
+                    {
+                        if (isPlayerOne)
+                        {
+                            playerOneCards.Add(value);
+                        }
+                        else
+                        {
+                            playerTwoCards.Add(value);
+                        }
+                    }
+                }
+                else
+                {
+                    isPlayerOne = false;
+                }
             }
 
-            Console.WriteLine($"2020 - Day 22 - Part 1 : {part1}");
-            Console.WriteLine($"2020 - Day 22 - Part 2 : {part2}");
+            Console.WriteLine($"2020 - Day 22 - Part 1 : {Day22Part1(playerOneCards, playerTwoCards)}");
+            Console.WriteLine($"2020 - Day 22 - Part 2 : {Day22Part2(playerOneCards, playerTwoCards)}");
         }
 
-        public static int Day22Part1(string input)
+        public static int Day22Part1(List<int> playerOneCards, List<int> playerTwoCards)
         {
-            return 0;
+            while (playerOneCards.Count > 0 && playerTwoCards.Count > 0)
+            {
+                if (playerOneCards.First() > playerTwoCards.First())
+                {
+                    playerOneCards.Add(playerOneCards.First());
+                    playerOneCards.Add(playerTwoCards.First());
+                    playerOneCards.RemoveAt(0);
+                    playerTwoCards.RemoveAt(0);
+                }
+                else
+                {
+                    playerTwoCards.Add(playerTwoCards.First());
+                    playerTwoCards.Add(playerOneCards.First());
+                    playerTwoCards.RemoveAt(0);
+                    playerOneCards.RemoveAt(0);
+                }
+            }
+
+            if (playerOneCards.Count > 0)
+            {
+                return playerOneCards.Select((elem, index) => elem * (playerOneCards.Count - index)).Sum();
+            }
+            else
+            {
+                return playerTwoCards.Select((elem, index) => elem * (playerTwoCards.Count - index)).Sum();
+            }
         }
 
-        public static int Day22Part2(string input)
+        public static int Day22Part2(List<int> playerOneCards, List<int> playerTwoCards)
         {
             return 0;
         }
