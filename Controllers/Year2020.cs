@@ -439,11 +439,74 @@ namespace Advent_of_Code.Controllers
 
         public static int Day6Part1(string input)
         {
+            /*
+            var line = "";
+            var count = 0;
+            var list = new List<char>();
+            
+            while((line = Console.ReadLine()) != null) {
+                if(line == "") {
+                    count += list.Count();
+                    list = new List<char>();
+                } else {
+                    foreach(var item in line.ToCharArray()) {
+                        if(!list.Contains(item)) {
+                            list.Add(item);
+                        }
+                    }
+                }
+            }
+            
+            count += list.Count();
+            
+            Console.WriteLine(count);
+            */
+        
             return 0;
         }
 
         public static int Day6Part2(string input)
         {
+            /*
+            var line = "";
+            var count = 0;
+            var people = 0;
+            var dict = new Dictionary<char, int>();
+            
+            while((line = Console.ReadLine()) != null) {
+                if(line == "") {                    
+                    foreach(KeyValuePair<char, int> entry in dict)
+                    {
+                        if(entry.Value == people) {
+                              count++;
+                        }
+                    }
+                    
+                    people = 0;
+                    dict = new Dictionary<char, int>();
+                } else {
+                    people++;
+                    
+                    foreach(var item in line.ToCharArray()) {
+                        if(!dict.ContainsKey(item)) {
+                            dict.Add(item, 1);
+                        } else {
+                            dict[item]++;
+                        }
+                    }
+                }
+            }
+            
+            foreach(KeyValuePair<char, int> entry in dict)
+                    {
+                        if(entry.Value == people) {
+                              count++;
+                        }
+                    }
+            
+            Console.WriteLine(count);
+            */
+        
             return 0;
         }
 
